@@ -22,7 +22,7 @@ export const postRequest = async (url, body) => {
 };
 
 export const getRequest = async (url) => {
-  const response = await fetch(`${baaseUrl}/${url}`);
+  const response = await fetch(`${baseUrl}/${url}`);
   const data = await response.json();
   if (!response.ok) {
     let message = "Something went wrong";
