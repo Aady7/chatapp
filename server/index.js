@@ -2,6 +2,8 @@ const express = require('express');
 const cors=require('cors');
 const mongoose = require('mongoose');
 const userRoutes = require('./Routes/userRoutes');
+const chatRoutes =require('./Routes/chatRoutes');
+const messageRoutes = require('./Routes/messageRoutes');
 
 // Import required modules
 
@@ -10,6 +12,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/api/user', userRoutes);
+app.use("/api/chat",chatRoutes);
+app.use("/api/message", messageRoutes);
+
 require("dotenv").config();
 // Define routes
 app.get('/', (req, res) => {
