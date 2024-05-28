@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import ChatContext from "../context/ChatContext";
 import Navbar from "../components/navbar";
+import ChatContext from "../context/ChatContext";
 function Chat() {
    const {isUserChatLoading, userChat, userChatError} = useContext(ChatContext);
     console.log(userChat);
