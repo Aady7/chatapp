@@ -7,14 +7,16 @@ export const useFetchRecipeintUser = (chat, user) => {
     const[reciepientLoading, setReciepientLoading] = useState(false);
     const[reciepientError, setReciepientError] = useState(null);
 
-    const reciepientId= chat?.members.find((id)=>{ return id!=user._id});
+    const reciepientId= chat?.members?.find((id)=>{ return id!=user._id});
 
     useEffect(()=>{
         const getUser=async()=>{
+           
             if(!reciepientId) return;
 
             setReciepientLoading(true);
             setReciepientError(null);
+            console.log("nahi run hua yeh part");
             
             const response= await getRequest(`user/${reciepientId}`);
             if(response.error){
@@ -23,8 +25,10 @@ export const useFetchRecipeintUser = (chat, user) => {
                 return;
             }
             setReciepientUser(response);
+         
         }
         getUser();
+       
        
 
 
