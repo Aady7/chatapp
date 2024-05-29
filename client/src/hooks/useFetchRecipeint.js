@@ -16,7 +16,7 @@ export const useFetchRecipeintUser = (chat, user) => {
 
             setReciepientLoading(true);
             setReciepientError(null);
-            console.log("nahi run hua yeh part");
+            
             
             const response= await getRequest(`user/${reciepientId}`);
             if(response.error){

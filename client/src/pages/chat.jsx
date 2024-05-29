@@ -3,6 +3,7 @@ import Navbar from "../components/navbar";
 import ChatContext from "../context/ChatContext";
 import AuthContext from "../context/AuthContext";
 import UserChat from "../components/chat/UserChat";
+import PotentialChats from "../components/chat/PotentialChats";
 
 function Chat() {
     const { isUserChatLoading, userChat, userChatError } = useContext(ChatContext);
@@ -11,6 +12,7 @@ function Chat() {
     return (
         <>
             <Navbar />
+            <PotentialChats/>
             {userChat && userChat.length < 1 ? null : (
                 <div className="flex justify-center items-center h-screen">
                     <div className="w-1/3 bg-slate-900 text-yellow-500 shadow-md rounded px-8 pt-6 pb-8 mb-4">

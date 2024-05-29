@@ -9,6 +9,8 @@ export const ChatContextProvider = ({ children, user }) => {
   const [userChat, setUserChat] = useState(null);
   const [isUserChatLoading, setIsUserChatLoading] = useState(false);
   const [userChatError, setUserChatError] = useState(null);
+  const [potentialChats, setPotentialChats] = useState(null);
+  const [potentialChatError, setPotentialChatError] = useState(null);
 
   useEffect(() => {
     const getUserChats = async () => {
@@ -25,9 +27,39 @@ export const ChatContextProvider = ({ children, user }) => {
     };
     getUserChats();
   }, [user]);
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const response = await getRequest("user");
+      if (response.error) {
+        setPotentialChatError(response);
+        return;
+      }
+     const pchats= response.filter((v, index) => {
+        const isChatCreated = false;
+        if (user._id == v._id) {
+          return;
+        }
+
+        if (userChat) {
+          availableChats = userChat?.some((chat) => {
+            return (isChatCreated =
+              chat.member[0] === v._id || chat.member[1] === v._id);
+          });
+        }
+
+        return !isChatCreated;
+
+
+      });
+      setPotentialChats(pchats);
+    };
+    getUsers();
+  }, [userChatError]);
+
   return (
     <ChatContext.Provider
-      value={{ isUserChatLoading, userChat, userChatError }}
+      value={{ isUserChatLoading, userChat, userChatError, potentialChats, potentialChatError}}
     >
       {children}
     </ChatContext.Provider>
