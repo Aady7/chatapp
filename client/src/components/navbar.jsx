@@ -9,6 +9,10 @@ export default function Navbar() {
                 <div className="flex justify-between items-center">
                     <div>
                         <h1 className="text-3xl font-bold text-yellow-500">Chat App</h1>
+                      {
+                        user &&  <h3>logged in as {user.username}</h3>
+                      } 
+
                     </div>
                     <div>
                     {
