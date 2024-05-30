@@ -12,6 +12,8 @@ export const ChatContextProvider = ({ children, user }) => {
   const [userChatError, setUserChatError] = useState(null);
   const [potentialChats, setPotentialChats] = useState(null);
   const [potentialChatError, setPotentialChatError] = useState(null);
+  const[currentChat, setCurrentChat]=useState(null);
+  
 
   useEffect(() => {
     const getUserChats = async () => {
@@ -44,10 +46,7 @@ export const ChatContextProvider = ({ children, user }) => {
 
         if (userChat) {
           isChatCreated = userChat?.some((chat) => {
-            if(chat?.members?.[0] === v._id || chat?.members?.[1] === v._id){
-              console.log("chat already created");
-
-            }
+            
             return (
               chat?.members?.[0] === v._id || chat?.members?.[1] === v._id);
              
@@ -73,6 +72,11 @@ export const ChatContextProvider = ({ children, user }) => {
    setUserChat((prev)=>{[...prev, response]})
   }, []);
 
+  const getCurrentChat=useCallback((chat)=>{
+    setCurrentChat(chat);
+
+  },[]);
+
   return (
     <ChatContext.Provider
       value={{
@@ -82,6 +86,8 @@ export const ChatContextProvider = ({ children, user }) => {
         potentialChats,
         potentialChatError,
         CreateChat,
+        getCurrentChat,
+        currentChat,
         
       }}
     >
