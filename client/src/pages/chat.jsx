@@ -12,6 +12,7 @@ function Chat() {
     userChatError,
     getCurrentChat,
     currentChat,
+    message
   } = useContext(ChatContext);
   const { user } = useContext(AuthContext);
 

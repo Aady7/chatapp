@@ -2,7 +2,6 @@ import { createContext, useCallback, useState } from "react";
 import { useEffect } from "react";
 import { getRequest, baseUrl, postRequest } from "../utils/services";
 
-
 const ChatContext = createContext();
 export default ChatContext;
 
@@ -12,8 +11,11 @@ export const ChatContextProvider = ({ children, user }) => {
   const [userChatError, setUserChatError] = useState(null);
   const [potentialChats, setPotentialChats] = useState(null);
   const [potentialChatError, setPotentialChatError] = useState(null);
-  const[currentChat, setCurrentChat]=useState(null);
-  
+  const [currentChat, setCurrentChat] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [messageLoading, setMessageLoading] = useState(false);
+  const [messageError, setMessageError] = useState(null);
+  console.log(message);
 
   useEffect(() => {
     const getUserChats = async () => {
@@ -46,11 +48,7 @@ export const ChatContextProvider = ({ children, user }) => {
 
         if (userChat) {
           isChatCreated = userChat?.some((chat) => {
-            
-            return (
-              chat?.members?.[0] === v._id || chat?.members?.[1] === v._id);
-             
-            
+            return chat?.members?.[0] === v._id || chat?.members?.[1] === v._id;
           });
         }
 
@@ -69,13 +67,28 @@ export const ChatContextProvider = ({ children, user }) => {
     if (response.error) {
       console.log("Error occured:", response);
     }
-   setUserChat((prev)=>{[...prev, response]})
+    setUserChat((prev) => {
+      [...prev, response];
+    });
   }, []);
 
-  const getCurrentChat=useCallback((chat)=>{
+  const getCurrentChat = useCallback((chat) => {
     setCurrentChat(chat);
+  }, []);
 
-  },[]);
+  useEffect(() => {
+    const getUserMessage = async () => {
+      const response = await getRequest(`message/${currentChat._id}`);
+      setMessageLoading(true);
+      if (response.error) {
+        console.log(response);
+        setMessageError(response);
+      }
+      setMessageLoading(false);
+      setMessage(response);
+    };
+    getUserMessage();
+  }, [currentChat]);
 
   return (
     <ChatContext.Provider
@@ -88,7 +101,10 @@ export const ChatContextProvider = ({ children, user }) => {
         CreateChat,
         getCurrentChat,
         currentChat,
-        
+        message,
+        messageError,
+        messageLoading,
+      
       }}
     >
       {children}
